@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Promise</title>
+</head>
+<body>
+<button id="fetch_data" onclick="">Fetch data</button>
+<div id="house_list">
+<link rel="stylesheet" href="style_3_3.css">
+</div>
+</body>
+<script>
+/**
+* Refer API Documentation https://anapioficeandfire.com/Documentation
+* Fetch the details of various houses in the Game of thrones universe
+*
+* Challenge 1
+* Fetch and list down the names of the houses when the user clicks on 'Fetch data' button
+*
+* Challenge 2
+* Improve the result of challenge 1 by grouping the houses based on region
+* *Hint* use promise chaining
+*/
+
+let btn = document.getElementById("fetch_data");
+btn.addEventListener("click",list_houses);
+
+function list_houses(){
+let url = "https://www.anapioficeandfire.com/api/houses";
+
+fetch(url).then(res => res.json()).then(res => {
+  
+  //console.log(res);
+
+  function compare( a, b ) {
+  if ( a.region > b.region ){
+    return 1;
+  }
+  if ( a.region < b.region ){
+    return -1;
+  }
+  return 0;
+}
+
+
+res.sort(compare);
+
+console.log(res);
+// challenge 1: Listing house names 
+
+  // res.forEach((element) => {console.log(element.name);
+  //   let ul = document.getElementById("hl");
+  //   let li = document.createElement("li");
+  //   li.innerHTML = element.name;
+  //   ul.appendChild(li);
+
+  //   //document.getElementById("hl").innerHTML = element.name;
+  // }
+  // )
+
+  let reg = res[0].region;
+  console.log(reg);
+  let ul = document.createElement("ul");
+  
+  ul.innerHTML = reg;
+  console.log(ul.innerHTML);
+  document.getElementById("house_list").appendChild(ul);
+  ul.setAttribute("id","reg1");
+  res.forEach((element) =>{
+    if(element.region == reg){
+      let li = document.createElement("li");
+      li.innerHTML  = element.name;
+      ul.appendChild(li);
+    }
+
+    else{
+      reg = element.region;
+      let ul = document.createElement("ul");
+      ul.innerHTML = reg;
+      document.getElementById("house_list").appendChild(ul);
+      let li = document.createElement("li");
+      li.innerHTML  = element.name;
+      ul.appendChild(li);
+    }
+  })
+
+
+})}
+  
+</script>
+</html>
